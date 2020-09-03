@@ -1,6 +1,6 @@
 {
     "port": 8080,
-    "url": "https://gitlab.navinfo.com",
+    "url": "https://gitlab.example.com",
     "accessToken": "", // Can also use GITLAB_ACCESS_TOKEN environment variable. The token is acquired from https://gitlab.example.com/profile/personal_access_tokens
     "filters": [
         "/api/v4/projects",
