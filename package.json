@@ -9,9 +9,6 @@
         "test": "mocha src/**/*.ts --require='ts-node/register/transpile-only'",
         "kill": "TaskKill /IM node.exe /F"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
     "dependencies": {
         "deep-extend": "^0.6.0",
         "express": "^4.17.1",
@@ -38,5 +35,25 @@
     },
     "bin": {
         "gitlab-api-filter": "dist/index.js"
-    }
+    },
+    "files": [
+        "dist/**/*.js",
+        "README.rst",
+        "LICENSE"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kingsimba/gitlab-api-filter.git"
+    },
+    "keywords": [
+        "git",
+        "repository"
+    ],
+    "author": "kingsimba",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/kingsimba/gitlab-api-filter/issues"
+    },
+    "homepage": "https://github.com/kingsimba/gitlab-api-filter#readme",
+    "preferGlobal": true
 }
