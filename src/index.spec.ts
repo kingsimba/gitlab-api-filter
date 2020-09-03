@@ -18,7 +18,7 @@ describe('App', () => {
     });
 
     it('/projects/:id/repository/branches return branches', async () => {
-        const res = await chai.request(app).get('/api/v4/projects/166/repository/branches');
+        const res = await chai.request(app).get('/api/v4/projects/20912856/repository/branches');
         expect(res).to.have.status(200);
         expect(res.body).to.be.an('Array');
         const branches: any[] = res.body;
@@ -32,7 +32,7 @@ describe('App', () => {
     });
 
     it('/projects/:id/repository/branches return tags', async () => {
-        const res = await chai.request(app).get('/api/v4/projects/166/repository/tags');
+        const res = await chai.request(app).get('/api/v4/projects/20912856/repository/tags');
         expect(res).to.have.status(200);
         expect(res.body).to.be.an('Array');
         const branches: any[] = res.body;
