@@ -1,14 +1,18 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import chaiString from 'chai-string';
 import { app } from './index';
 
 const expect = chai.expect;
 
 chai.use(chaiHttp);
+chai.use(chaiString);
 
 describe('App', () => {
-
     it('/projects return an array of projects', async () => {
+        expect(process.env.GITLAB_AF_URL).equals("https://gitlab.com");
+        expect(process.env.GITLAB_AF_ACCESS_TOKEN).startsWith('mQX');
+
         const res = await chai.request(app).get('/api/v4/projects');
         expect(res).to.have.status(200);
         expect(res.body).to.be.an('Array');
