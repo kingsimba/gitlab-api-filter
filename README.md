@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/kingsimba/gitlab-api-filter/workflows/CI/badge.svg)](https://github.com/kingsimba/gitlab-api-filter/actions)
+
 # GitLab API Filter
 
 A delegate to expose a selected subset of GitLab APIs.
