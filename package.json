@@ -35,5 +35,8 @@
         "ts-node-dev": "^1.0.0-pre.44",
         "tslint": "^6.1.0",
         "typescript": "^4.0.2"
+    },
+    "bin": {
+        "gitlab-api-filter": "dist/index.js"
     }
 }

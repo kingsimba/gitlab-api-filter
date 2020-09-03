@@ -17,7 +17,8 @@ export class GlobalOptions {
         try {
             // read from file
             if (!fs.existsSync(fileName)) {
-                throw new Error(`config file ${fileName} not exist`)
+                o.errorMessage = `error: config file ${fileName} not exist`;
+                return o;
             }
             let text = fs.readFileSync(fileName, 'utf8');
             text = stripJsonComments(text);
@@ -30,6 +31,12 @@ export class GlobalOptions {
             }
             if (process.env.GITLAB_AF_URL) {
                 o.url = process.env.GITLAB_AF_URL;
+            }
+
+            // check
+            if (o.accessToken == '') {
+                o.errorMessage = 'error: access token is empty';
+                return o;
             }
         } catch (error) {
             o.errorMessage = error;

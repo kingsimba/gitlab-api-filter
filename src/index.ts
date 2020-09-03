@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import express from "express";
 import request from "request";
 import { globalOptions, GlobalOptions } from "./global-options";
@@ -27,7 +28,19 @@ app.get(globalOptions.filters, async (req, res) => {
     });
 });
 
-// start the Express server
-app.listen(globalOptions.port, () => {
-    console.log(`server started at http://localhost:${globalOptions.port}`);
-});
+if (globalOptions.errorMessage) {
+    console.log(globalOptions.errorMessage);
+    process.exit(1);
+} else {
+    console.log(`Starting server with options...`);
+    console.log('url:', globalOptions.url);
+    console.log('port:', globalOptions.port);
+    console.log('accessToken:', globalOptions.accessToken ? 'x'.repeat(globalOptions.accessToken.length) : '(empty)');
+    console.log('filters:', globalOptions.filters);
+    console.log('');
+
+    // start the Express server
+    app.listen(globalOptions.port, () => {
+        console.log(`Server started at http://localhost:${globalOptions.port}`);
+    });
+}
