@@ -1,7 +1,7 @@
 {
-    "port": 8080,
-    "url": "https://gitlab.example.com",
-    "accessToken": "", // Can also use GITLAB_ACCESS_TOKEN environment variable. The token is acquired from https://gitlab.example.com/profile/personal_access_tokens
+    "port": 8080, // Can also use environment variable GITLAB_AF_PORT
+    "url": "https://gitlab.example.com", // Can also use environment variable GITLAB_AF_URL
+    "accessToken": "", // Can also use GITLAB_AF_ACCESS_TOKEN environment variable. The token is acquired from https://gitlab.example.com/profile/personal_access_tokens
     "filters": [
         "/api/v4/projects",
         "/api/v4/projects/:id/repository/branches",
