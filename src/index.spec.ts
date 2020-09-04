@@ -8,10 +8,25 @@ const expect = chai.expect;
 chai.use(chaiHttp);
 chai.use(chaiString);
 
+let gitlabDotCom = true;
+let projectId = 0;
+
 describe('App', () => {
+    before(() => {
+        if (process.env.GITLAB_AF_URL == "https://gitlab.com") {
+            gitlabDotCom = true;
+            projectId = 20912856;
+        } else {
+            gitlabDotCom = false;
+            projectId = 199;
+        }
+    });
+
     it('/projects return an array of projects', async () => {
-        expect(process.env.GITLAB_AF_URL).equals("https://gitlab.com");
-        expect(process.env.GITLAB_AF_ACCESS_TOKEN).startsWith('mQX');
+        if (gitlabDotCom) {
+            expect(process.env.GITLAB_AF_URL).equals("https://gitlab.com");
+            expect(process.env.GITLAB_AF_ACCESS_TOKEN).startsWith('mQX');
+        }
 
         const res = await chai.request(app).get('/api/v4/projects');
         expect(res).to.have.status(200);
@@ -21,8 +36,14 @@ describe('App', () => {
         expect(firstProject).to.include.all.keys('id', 'name');
     });
 
+    it('/projects/id return a project', async () => {
+        const res = await chai.request(app).get(`/api/v4/projects/${projectId}`);
+        expect(res).to.have.status(200);
+        expect(res.body.id).equals(projectId);
+    });
+
     it('/projects/:id/repository/branches return branches', async () => {
-        const res = await chai.request(app).get('/api/v4/projects/20912856/repository/branches');
+        const res = await chai.request(app).get(`/api/v4/projects/${projectId}/repository/branches?per_page=100`);
         expect(res).to.have.status(200);
         expect(res.body).to.be.an('Array');
         const branches: any[] = res.body;
@@ -36,16 +57,30 @@ describe('App', () => {
     });
 
     it('/projects/:id/repository/branches return tags', async () => {
-        const res = await chai.request(app).get('/api/v4/projects/20912856/repository/tags');
+        const res = await chai.request(app).get(`/api/v4/projects/${projectId}/repository/tags?per_page=100`);
         expect(res).to.have.status(200);
         expect(res.body).to.be.an('Array');
-        const branches: any[] = res.body;
+        const tags: any[] = res.body;
         let v1;
-        for (const b of branches) {
-            if (b.name == 'v1.0.0') {
+        for (const b of tags) {
+            if (b.name == '5.2.0' || b.name == 'v1.0.0') {
                 v1 = b;
             }
         }
         expect(v1).exist;
+    });
+
+    it('/projects/:id/member return all members, including inherited ones', async () => {
+        const res = await chai.request(app).get(`/api/v4/projects/${projectId}/members/all`);
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.an('Array');
+        const users: any[] = res.body;
+        let user;
+        for (const b of users) {
+            if (b.name == 'kingsimba0511' || b.name == 'Zhaolin Feng') {
+                user = b;
+            }
+        }
+        expect(user).exist;
     });
 });

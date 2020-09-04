@@ -19,7 +19,7 @@ app.get(globalOptions.filters, async (req, res) => {
     const headers = {
         'Private-Token': globalOptions.accessToken
     }
-    request(`${globalOptions.url}/${req.path}`, { json: true, headers }, (err, res1, body) => {
+    request(`${globalOptions.url}/${req.url}`, { json: true, headers }, (err, res1, body) => {
         if (res1) {
             res.send(res1.body);
         } else {
