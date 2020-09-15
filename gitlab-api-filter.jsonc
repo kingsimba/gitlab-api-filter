@@ -1,8 +1,11 @@
 {
     "port": 8080, // Can also use environment variable GITLAB_AF_PORT
+    // If 'secret' is none-empty, http header GITLAB_AF_SECRET is used to authorize requests.
+    // For example: curl --header "GITLAB_AF_SECRET: XXXXXXX" http://xxxx.com/api/v4/projects
+    "secret": "",
     "upstream": {
-        "url": "https://gitlab.mapbar.com", // Can also use environment variable GITLAB_AF_URL
-        "accessToken": "CQwC4St3YS6DWJRsBXFG" // Can also use GITLAB_AF_ACCESS_TOKEN environment variable. The token is acquired from https://gitlab.example.com/profile/personal_access_tokens
+        "url": "https://gitlab.example.com", // Can also use environment variable GITLAB_AF_URL
+        "accessToken": "" // Can also use GITLAB_AF_ACCESS_TOKEN environment variable. The token is acquired from https://gitlab.example.com/profile/personal_access_tokens
     },
     "blacklist": [
         "/api/v4/projects/:id/repository*",

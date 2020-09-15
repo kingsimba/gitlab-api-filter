@@ -2,6 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import chaiString from 'chai-string';
 import { app } from './index';
+import { globalOptions } from './global-options';
 
 const expect = chai.expect;
 
@@ -22,8 +23,12 @@ describe('App', () => {
         }
     });
 
+    beforeEach(() => {
+        globalOptions.secret = undefined;
+    });
+
     it('blacklist works', async () => {
-        const res = await chai.request(app).get(`/api/v4/projects/${projectId}/repository/files`);
+        const res = await chai.request(app).get(`/api/v4/projects/${projectId}/repository/files`).set('GITLAB_AF_SECRET', 'ASD');
         expect(res).to.have.status(403);
         expect(res.body).deep.contains({
             status: 403,
@@ -46,6 +51,16 @@ describe('App', () => {
 
         const res2 = await chai.request(app).get(`/api/v4/projects/${projectId}/repository/files/readme.rst?ref=master`);
         expect(res2).to.have.status(403);
+    });
+
+    it('secret works', async () => {
+        globalOptions.secret = 'ABC';
+        // right secret
+        const res = await chai.request(app).get('/api/v4/projects').set('GITLAB_AF_SECRET', 'ABC');
+        expect(res).to.have.status(200);
+        // wrong secret
+        const res2 = await chai.request(app).get('/api/v4/projects').set('GITLAB_AF_SECRET', 'WRONG');
+        expect(res2).to.have.status(401);
     });
 
     it('/projects/id return a project', async () => {

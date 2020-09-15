@@ -9,7 +9,9 @@ export const app = express();
 // Middleware to return error message, if there is any error in the config file.
 app.use('/', async (req, res, next) => {
     if (globalOptions.errorMessage) {
-        res.status(500).send({ message: globalOptions.errorMessage });
+        res.status(500).send({ status: 500, message: globalOptions.errorMessage });
+    } else if (globalOptions.secret != undefined && req.header('GITLAB_AF_SECRET') != globalOptions.secret) {
+        res.status(401).send({ status: 401, message: 'GITLAB_AF_SECRET is not correct' });
     } else {
         next();
     }
