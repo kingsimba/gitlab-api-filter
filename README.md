@@ -31,8 +31,8 @@ Starting server with options...
 port: 8080
 upstream.url: https://gitlab.xxx.com
 upstream.accessToken: xxxxxxxxxxxxxxxxxxxx
-whitelist: [ '/api/v4/blocked' ]
-blacklist: [
+blacklist: [ '/api/v4/blocked' ]
+whitelist: [
   '/api/v4/projects',
   '/api/v4/projects/:id',
   '/api/v4/projects/:id/members*',

@@ -52,10 +52,10 @@ if (globalOptions.errorMessage) {
     console.log('upstream.url:', globalOptions.upstream.url);
     console.log('upstream.accessToken:', globalOptions.upstream.accessToken ? 'x'.repeat(globalOptions.upstream.accessToken.length) : '(empty)');
     if (globalOptions.blacklist) {
-        console.log('whitelist:', globalOptions.blacklist);
+        console.log('blacklist:', globalOptions.blacklist);
     }
     if (globalOptions.whitelist) {
-        console.log('blacklist:', globalOptions.whitelist);
+        console.log('whitelist:', globalOptions.whitelist);
     }
     console.log('');
 
