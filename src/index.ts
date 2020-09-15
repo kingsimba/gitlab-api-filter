@@ -60,7 +60,9 @@ app.use('/', async (req, res) => {
             for (let index = 0; index < res1.rawHeaders.length; index += 2) {
                 const key = res1.rawHeaders[index];
                 const value = res1.rawHeaders[index + 1];
-                res.header(key, value);
+                if (key.startsWith('X-') || key.startsWith('x-')) {
+                    res.header(key, value);
+                }
             }
             res.send(res1.body);
         } else {
