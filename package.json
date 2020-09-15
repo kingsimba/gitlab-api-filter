@@ -1,6 +1,6 @@
 {
     "name": "gitlab-api-filter",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "description": "Expose selected APIs of gitlab",
     "main": "dist/index.js",
     "scripts": {
