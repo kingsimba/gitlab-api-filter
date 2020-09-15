@@ -23,7 +23,7 @@ describe('App', () => {
     });
 
     it('blacklist works', async () => {
-        const res = await chai.request(app).get('/api/v4/blocked');
+        const res = await chai.request(app).get(`/api/v4/projects/${projectId}/repository/files`);
         expect(res).to.have.status(403);
         expect(res.body).deep.contains({
             status: 403,
@@ -44,11 +44,8 @@ describe('App', () => {
         const firstProject = res.body[0];
         expect(firstProject).to.include.all.keys('id', 'name');
 
-        const res2 = await chai.request(app).get('/api/v4/projects/${projectId}/repository/file');
+        const res2 = await chai.request(app).get(`/api/v4/projects/${projectId}/repository/files/readme.rst?ref=master`);
         expect(res2).to.have.status(403);
-
-        const res3 = await chai.request(app).get('/api/v4/not-in-white-list');
-        expect(res3).to.have.status(403);
     });
 
     it('/projects/id return a project', async () => {
@@ -71,7 +68,7 @@ describe('App', () => {
         expect(master).exist;
     });
 
-    it('/projects/:id/repository/branches return tags', async () => {
+    it('/projects/:id/repository/tags return tags', async () => {
         const res = await chai.request(app).get(`/api/v4/projects/${projectId}/repository/tags?per_page=100`);
         expect(res).to.have.status(200);
         expect(res.body).to.be.an('Array');

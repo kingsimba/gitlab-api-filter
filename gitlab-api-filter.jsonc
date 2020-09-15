@@ -5,12 +5,9 @@
         "accessToken": "" // Can also use GITLAB_AF_ACCESS_TOKEN environment variable. The token is acquired from https://gitlab.example.com/profile/personal_access_tokens
     },
     "blacklist": [
-        "/api/v4/blocked"
+        "/api/v4/projects/:id/repository*"
     ],
     "whitelist": [
-        "/api/v4/projects",
-        "/api/v4/projects/:id",
-        "/api/v4/projects/:id/members*", // support wildcard
         "/api/v4/projects/:id/repository/branches",
         "/api/v4/projects/:id/repository/tags"
     ]
