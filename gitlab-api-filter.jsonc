@@ -1,8 +1,8 @@
 {
     "port": 8080, // Can also use environment variable GITLAB_AF_PORT
     "upstream": {
-        "url": "https://gitlab.mapbar.com", // Can also use environment variable GITLAB_AF_URL
-        "accessToken": "imS9JBdNg9k6Y5iG6e-y" // Can also use GITLAB_AF_ACCESS_TOKEN environment variable. The token is acquired from https://gitlab.example.com/profile/personal_access_tokens
+        "url": "https://gitlab.example.com", // Can also use environment variable GITLAB_AF_URL
+        "accessToken": "" // Can also use GITLAB_AF_ACCESS_TOKEN environment variable. The token is acquired from https://gitlab.example.com/profile/personal_access_tokens
     },
     "blacklist": [
         "/api/v4/blocked"
