@@ -31,17 +31,19 @@ Starting server with options...
 port: 8080
 upstream.url: https://gitlab.xxx.com
 upstream.accessToken: xxxxxxxxxxxxxxxxxxxx
-blacklist: [ '/api/v4/blocked' ]
+blacklist: [
+  "/api/v4/projects/:id/repository*",
+  "/api/v4/projects/:id/search"
+]
 whitelist: [
-  '/api/v4/projects',
-  '/api/v4/projects/:id',
-  '/api/v4/projects/:id/members*',
-  '/api/v4/projects/:id/repository/branches',
-  '/api/v4/projects/:id/repository/tags'
+  "/api/v4/projects/:id/repository/branches",
+  "/api/v4/projects/:id/repository/tags",
+  "/api/v4/projects/:id/repository/commits"
 ]
 Server started at http://localhost:8080
 ```
 
 ## Changelog
 
+- 1.3.0 2020-09-15 Support secret. Fix missing response header such as 'x-page'.
 - 1.2.2 2020-09-15 Add 'blacklist'. Rename 'filters' to 'whitelist'. Rename 'url' and 'accessToken' to 'upstream.url' and 'upstream.accessToken'.
