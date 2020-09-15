@@ -44,4 +44,4 @@ Server started at http://localhost:8080
 
 ## Changelog
 
-- 2020-09-15 Add 'blacklist'. Rename 'filters' to 'whitelist'. Rename 'url' and 'accessToken' to 'upstream.url' and 'upstream.accessToken'.
+- 1.2.0 2020-09-15 Add 'blacklist'. Rename 'filters' to 'whitelist'. Rename 'url' and 'accessToken' to 'upstream.url' and 'upstream.accessToken'.
