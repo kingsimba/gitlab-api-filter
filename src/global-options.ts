@@ -25,6 +25,8 @@ export class GlobalOptions {
     public whitelistMatchers: any[] | undefined;
     public blacklistMatchers: any[] | undefined;
 
+    public secret: string | undefined;
+
     static instanceWithDefaultConfigFile(): GlobalOptions {
         const o: GlobalOptions = new GlobalOptions();
         const fileName = GlobalOptions.configFileName;
@@ -51,6 +53,11 @@ export class GlobalOptions {
             if (o.upstream.accessToken == '') {
                 o.errorMessage = 'error: access token is empty';
                 return o;
+            }
+
+            // disallow empty secret
+            if (o.secret == '') {
+                o.secret = undefined;
             }
 
             // compile URL matchers
