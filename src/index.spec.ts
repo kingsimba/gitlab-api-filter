@@ -72,6 +72,7 @@ describe('App', () => {
         const res = await chai.request(app).get(`/api/v4/projects/${projectId}/repository/tags?per_page=100`);
         expect(res).to.have.status(200);
         expect(res.body).to.be.an('Array');
+        expect(res.header['x-page']).equals('1');
         const tags: any[] = res.body;
         let v1;
         for (const b of tags) {

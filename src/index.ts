@@ -1,14 +1,7 @@
 #!/usr/bin/env node
 import express from "express";
 import request from "request";
-import { globalOptions, GlobalOptions } from "./global-options";
-const route = require('path-match')({
-    // path-to-regexp options
-    sensitive: false,
-    strict: false,
-    end: false,
-});
-const parse = require('url').parse;
+import { globalOptions } from "./global-options";
 
 // Create Express instance
 export const app = express();
@@ -29,9 +22,8 @@ app.use('/', async (req, res, next) => {
 
     const path = req.path;
 
-    if (globalOptions.whitelist) {
-        for (const line of globalOptions.whitelist) {
-            const match = route(line);
+    if (globalOptions.whitelistMatchers) {
+        for (const match of globalOptions.whitelistMatchers) {
             const params = match(path);
             // match
             if (params !== false) {
@@ -41,9 +33,8 @@ app.use('/', async (req, res, next) => {
         }
     }
 
-    if (!allowed && globalOptions.blacklist) {
-        for (const line of globalOptions.blacklist!) {
-            const match = route(line);
+    if (!allowed && globalOptions.blacklistMatchers) {
+        for (const match of globalOptions.blacklistMatchers) {
             const params = match(path);
             // match
             if (params !== false) {
@@ -66,6 +57,11 @@ app.use('/', async (req, res) => {
     }
     request(`${globalOptions.upstream.url}/${req.url}`, { json: true, headers }, (err, res1, body) => {
         if (res1) {
+            for (let index = 0; index < res1.rawHeaders.length; index += 2) {
+                const key = res1.rawHeaders[index];
+                const value = res1.rawHeaders[index + 1];
+                res.header(key, value);
+            }
             res.send(res1.body);
         } else {
             res.sendStatus(404);
