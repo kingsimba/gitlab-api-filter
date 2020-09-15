@@ -1,11 +1,16 @@
 {
     "port": 8080, // Can also use environment variable GITLAB_AF_PORT
-    "url": "https://gitlab.example.com", // Can also use environment variable GITLAB_AF_URL
-    "accessToken": "", // Can also use GITLAB_AF_ACCESS_TOKEN environment variable. The token is acquired from https://gitlab.example.com/profile/personal_access_tokens
-    "filters": [
+    "upstream": {
+        "url": "https://gitlab.mapbar.com", // Can also use environment variable GITLAB_AF_URL
+        "accessToken": "imS9JBdNg9k6Y5iG6e-y" // Can also use GITLAB_AF_ACCESS_TOKEN environment variable. The token is acquired from https://gitlab.example.com/profile/personal_access_tokens
+    },
+    "blacklist": [
+        "/api/v4/blocked"
+    ],
+    "whitelist": [
         "/api/v4/projects",
         "/api/v4/projects/:id",
-        "/api/v4/projects/:id/members*",				// support wildcard
+        "/api/v4/projects/:id/members*", // support wildcard
         "/api/v4/projects/:id/repository/branches",
         "/api/v4/projects/:id/repository/tags"
     ]

@@ -6,10 +6,15 @@ export class GlobalOptions {
     public errorMessage: string | undefined;
 
     public static configFileName = 'gitlab-api-filter.jsonc';
+
     public port = 8080;
-    public url = "https://gitlab.example.com";
-    public filters: string[] = [];
-    accessToken: string = '';
+    public upstream = {
+        url: "https://gitlab.example.com",
+        accessToken: ''
+    };
+
+    public whitelist: string[] | undefined;
+    public blacklist: string[] | undefined;
 
     static instanceWithDefaultConfigFile(): GlobalOptions {
         const o: GlobalOptions = new GlobalOptions();
@@ -27,14 +32,14 @@ export class GlobalOptions {
 
             // read from environment variables
             if (process.env.GITLAB_AF_ACCESS_TOKEN) {
-                o.accessToken = process.env.GITLAB_AF_ACCESS_TOKEN;
+                o.upstream.accessToken = process.env.GITLAB_AF_ACCESS_TOKEN;
             }
             if (process.env.GITLAB_AF_URL) {
-                o.url = process.env.GITLAB_AF_URL;
+                o.upstream.url = process.env.GITLAB_AF_URL;
             }
 
             // check
-            if (o.accessToken == '') {
+            if (o.upstream.accessToken == '') {
                 o.errorMessage = 'error: access token is empty';
                 return o;
             }

@@ -6,6 +6,7 @@ import { globalOptions, GlobalOptions } from "./global-options";
 // Create Express instance
 export const app = express();
 
+// Middleware to return error message, if there is any error in the config file.
 app.use('/', async (req, res, next) => {
     if (globalOptions.errorMessage) {
         res.status(500).send({ message: globalOptions.errorMessage });
@@ -14,18 +15,32 @@ app.use('/', async (req, res, next) => {
     }
 });
 
-// Demonstrate how to read data from another server and return the result.
-app.get(globalOptions.filters, async (req, res) => {
-    const headers = {
-        'Private-Token': globalOptions.accessToken
-    }
-    request(`${globalOptions.url}/${req.url}`, { json: true, headers }, (err, res1, body) => {
-        if (res1) {
-            res.send(res1.body);
-        } else {
-            res.sendStatus(404);
-        }
+// handle blacklist
+if (globalOptions.blacklist) {
+    app.get(globalOptions.blacklist, async (req, res) => {
+        res.status(403).send({ status: 403, message: "Forbidden: The request is prohibited by the blacklist." });
     });
+}
+
+// handle whitelist
+if (globalOptions.whitelist) {
+    app.get(globalOptions.whitelist, async (req, res) => {
+        const headers = {
+            'Private-Token': globalOptions.upstream.accessToken
+        }
+        request(`${globalOptions.upstream.url}/${req.url}`, { json: true, headers }, (err, res1, body) => {
+            if (res1) {
+                res.send(res1.body);
+            } else {
+                res.sendStatus(404);
+            }
+        });
+    });
+}
+
+// anything else, 403
+app.get([], (req, res) => {
+    res.status(403).send({ status: 403, message: "Forbidden: The request is prohibited by the blacklist." });
 });
 
 if (globalOptions.errorMessage) {
@@ -33,10 +48,15 @@ if (globalOptions.errorMessage) {
     process.exit(1);
 } else {
     console.log(`Starting server with options...`);
-    console.log('url:', globalOptions.url);
     console.log('port:', globalOptions.port);
-    console.log('accessToken:', globalOptions.accessToken ? 'x'.repeat(globalOptions.accessToken.length) : '(empty)');
-    console.log('filters:', globalOptions.filters);
+    console.log('upstream.url:', globalOptions.upstream.url);
+    console.log('upstream.accessToken:', globalOptions.upstream.accessToken ? 'x'.repeat(globalOptions.upstream.accessToken.length) : '(empty)');
+    if (globalOptions.blacklist) {
+        console.log('whitelist:', globalOptions.blacklist);
+    }
+    if (globalOptions.whitelist) {
+        console.log('blacklist:', globalOptions.whitelist);
+    }
     console.log('');
 
     // start the Express server

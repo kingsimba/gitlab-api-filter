@@ -17,7 +17,8 @@ $ npm install -g gitlab-api-filter
 
 Create a configuration file: [gitlab-api-filter.jsonc](./gitlab-api-filter.jsonc):
 
-`filters` contains a list of [APIs](https://docs.gitlab.com/ce/api/) that must be exposed.
+`blacklist` contains a list of [APIs](https://docs.gitlab.com/ce/api/) that should be blocked.
+`whitelist` contains a list of [APIs](https://docs.gitlab.com/ce/api/) that should be exposed.
 
 `accessToken` or environment variable `GITLAB_AF_ACCESS_TOKEN` contains the Personal Access Token,
 which is acquired from https://gitlab.example.com/profile/personal_access_tokens
@@ -27,14 +28,20 @@ which is acquired from https://gitlab.example.com/profile/personal_access_tokens
 ```bash
 $ gitlab-api-filter
 Starting server with options...
-url: https://gitlab.com
 port: 8080
-accessToken: xxxxxxxxxxxxxxxxxxxx
-filters: [
+upstream.url: https://gitlab.xxx.com
+upstream.accessToken: xxxxxxxxxxxxxxxxxxxx
+whitelist: [ '/api/v4/blocked' ]
+blacklist: [
   '/api/v4/projects',
+  '/api/v4/projects/:id',
+  '/api/v4/projects/:id/members*',
   '/api/v4/projects/:id/repository/branches',
   '/api/v4/projects/:id/repository/tags'
 ]
-
 Server started at http://localhost:8080
 ```
+
+## Changelog
+
+- 2020-09-15 Add 'blacklist'. Rename 'filters' to 'whitelist'. Rename 'url' and 'accessToken' to 'upstream.url' and 'upstream.accessToken'.

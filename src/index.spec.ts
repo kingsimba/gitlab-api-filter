@@ -22,7 +22,16 @@ describe('App', () => {
         }
     });
 
-    it('/projects return an array of projects', async () => {
+    it('blacklist works', async () => {
+        const res = await chai.request(app).get('/api/v4/blocked');
+        expect(res).to.have.status(403);
+        expect(res.body).deep.contains({
+            status: 403,
+            message: "Forbidden: The request is prohibited by the blacklist."
+        })
+    });
+
+    it('whitelist works', async () => {
         if (gitlabDotCom) {
             expect(process.env.GITLAB_AF_URL).equals("https://gitlab.com");
             expect(process.env.GITLAB_AF_ACCESS_TOKEN).startsWith('mQX');
@@ -34,6 +43,12 @@ describe('App', () => {
         expect(res.body.length).gt(1);
         const firstProject = res.body[0];
         expect(firstProject).to.include.all.keys('id', 'name');
+
+        const res2 = await chai.request(app).get('/api/v4/projects/${projectId}/repository/file');
+        expect(res2).to.have.status(403);
+
+        const res3 = await chai.request(app).get('/api/v4/not-in-white-list');
+        expect(res3).to.have.status(403);
     });
 
     it('/projects/id return a project', async () => {
