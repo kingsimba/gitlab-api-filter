@@ -8,5 +8,17 @@ module.exports = {
         filename: 'gitlab-api-filter.js',
         libraryTarget: 'commonjs'
     },
-    target: 'node'
+    target: 'node',
+    module: {
+        rules: [
+            {
+                test: /\.(js|mjs|jsx)$/,
+                loader: 'string-replace-loader',
+                options: {
+                    search: '#!/usr/bin/env node',
+                    replace: '',
+                }
+            }
+        ]
+    }
 };
